@@ -12,6 +12,9 @@ inputFile = sys.argv[1]
 outputFile = sys.argv[2]
 gameDataInput = open(inputFile,'r')
 
+# capture which team to filter on from argument 3
+teamID = sys.argv[3]
+
 # read in the game data, each line a separate array item
 games = gameDataInput.readlines()
 
@@ -28,10 +31,12 @@ gameDataArray = []
 for i in range(1,len(games)):
     # get the data for the current game, and store it in an array
     eachGame = games[i].split(',')
-    # build the dictionary for the current game, stripping the '\n' character from the last key:value pair
-    gameDataDictionary = {headers[0]:eachGame[0],headers[1]:eachGame[1],headers[2]:eachGame[2],headers[4]:eachGame[4],headers[8]:eachGame[8],headers[9]:eachGame[9],headers[10].replace('\n',""):eachGame[10].replace('\n','')}
-    # append the current game to the overall array of game data
-    gameDataArray.append(gameDataDictionary)
+    # filter data for selected teamID
+    if (teamID == eachGame[3] or teamID == eachGame[7]):
+        # build the dictionary for the current game, stripping the '\n' character from the last key:value pair
+        gameDataDictionary = {headers[0]:eachGame[0],headers[1]:eachGame[1],headers[2]:eachGame[2],headers[4]:eachGame[4],headers[8]:eachGame[8],headers[9]:eachGame[9],headers[10].replace('\n',""):eachGame[10].replace('\n','')}
+        # append the current game to the overall array of game data
+        gameDataArray.append(gameDataDictionary)
 
 # populate the dictionary for the json file
 gameData['Games'] = gameDataArray
